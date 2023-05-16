@@ -1,7 +1,60 @@
-풀이과정
+(8258번 : 큐 2) 풀이 해설
+1. input을 받는 부분은 sys 라이브러리를 사용하여 시간을 줄인다.
+2. push 명령을 대비해서 커맨드 부분은 문자로 통째로 저장한다.
+그리고 해설자는 다음과 같은 풀이 방식을 전개해 나갔다.
+1. '파이썬 라이브러리'를 사용하여 코드를 작성하는 방법도 있었으나, 해당 코더는 그렇게 하지 않았다.
 
+2. 'sys 라이브러리'만 사용(input 시간 단축용)하였고, 
+나머지는 미리 'front'와 'back'이라는 좌표를 찍어둠으로써 작동 시간을 최대한으로 단축시켰다.
 
+3. 더 재밌는 사실은, pop 명령이 나와도 배열은 건들지 않으면서, '좌표만 옮김'으로써 실행 시간을 더 여유롭게 가지고 들어갔다는 사실이다.
 
-해답
+느낀점
+해당 코드를 보며 느낀 점은, 아무리 라이브러리의 시간복잡도가 O(1)이고 정석이 중요하더라도
+결국은 약간의 야매를 사용해서 푸는 방법이 더 빠르고 좋은 해법이 되는 경우가 많다는 것을 느꼈고,
+해당 내용을 기반으로 2164번 문제를 풀어봐야 겠다는 생각이 들었다.
 
-막힌 부분
+23.5.16
+* 방금 분석하면서 느낀 건데, 약간 순차적으로 이미지화를 시켰더니 분석이 빨리 됬다.
+* 예를 들어 front와 back 좌표가 있다고 하면, 그걸 수학처럼 x좌표에 그려보고, 비교하는 식으로 상상하니 시뮬레이션이 빨리 돌아갔다.
+* 뿐만 아니라 큐 배열과 좌표를 동시선상에 놓고 비교하니 답안에 대한 이해가 편했던 것 같다.
+
+#18258번 큐2 답안
+import sys 
+input = sys.stdin.readline
+
+n = int(input())
+queue = []
+front = 0
+back = -1
+for i in range(n):
+  command = input()[:-1] #위의 sys 라이브러리에서 readline은 개행 문자를 포함하기에, 그걸 지워주려고 -1까지 리스트 슬라이스 했음.
+  if command[0:4] == 'push': #push일 경우 : 파이썬 리스트 메서드 중 append 메서드 사용
+    queue.append(int(command[5:]))
+    back += 1
+  elif command == 'pop': #pop일 경우: 좌표를 변경함으로써 굳이 배열에서 정수를 빼지 않는 방식으로 진행. 
+   if back - front == -1:
+    print(-1)
+   else :
+    print(queue[front])
+    front+=1
+ elif command == 'size': #size일 경우: 맨 뒤에서 맨 앞을 빼고, 1을 더해줌(아무 것도 없을 때는 -1이 아니라 0이 나와야 하기 때문)
+  print(back-front+1)
+ elif command == 'empty': #empty일 경우: 비어 있는 큐일 경우 1, 아니면 0을 출력하게 함(큐가 비어있다고 판단하는 기준 : back 좌표에서 front 좌표를 뺐을 때 -1이 나오는 경우(빠진 수도 없고(front) 들어간 수(back)도 없으니 비어있다고 판단))
+  if back - front == -1:
+    print(1)
+  else:
+    print(0)
+ elif command == 'front': #front일 경우 : 큐의 변화가 없는 상태(-1)일 경우 그대로 출력하고, 아닐 경우에는 queue의 front좌표를 출력
+  if back - front == -1:
+    print(-1)
+  else:
+    print(queue[front])
+ elif command == 'back': #back일 경우 : front와 동일하지만, 출력하는 좌표만 다름
+  if back-front == -1:
+    print(-1)
+  else:
+    print(queue[back])
+else:
+  continue
+    
