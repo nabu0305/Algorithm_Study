@@ -10,7 +10,7 @@ def left(a, q): #좌측으로 돌렸을 경우 나오는 경우의 수
     q.popleft()
     return int(result)
 
-def right(a, q): #좌측으로 돌렸을 경우 나오는 경우의 수
+def right(a, q): #우측으로 돌렸을 경우 나오는 경우의 수
     result2 = 0
     while q[0] != a:
         q.appendleft(q.pop())
