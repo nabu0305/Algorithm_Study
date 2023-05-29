@@ -1,34 +1,39 @@
 from collections import deque
+import sys
 
-#코드 출처 : https://moonlight-spot.tistory.com/entry/%EB%B0%B1%EC%A4%80-5430-AC-in-%ED%8C%8C%EC%9D%B4%EC%8D%AC
+input = sys.stdin.readline
 
 T = int(input())
-for tc in range(T):
-    query = input()
-    k = int(input())
-    # q: 입력받은 배열 양방향 큐에 담기
-    q = deque(input()[1:-1].split(','))
-    # flag: R(뒤집기)를 한 번만 실행하기 위함
-    flag = 0
-    
-    # TIP! deque는 [''] 의 길이를 0이 아닌 1로 취급하기 때문에 초기화 필요!
-    if k == 0:  
-        q = []
-    
-    for c in query:
-        if c == 'R':
-            flag += 1
-        elif c == 'D':
-            if len(q) == 0:
-                print('error')
+
+for _ in range(T):
+    func = input().rstrip()
+    num = int(input())
+    arr = input().strip('[]\n').split(',')
+    arr = deque(arr)
+
+    reverse = 0
+    error = 0
+
+    if num == 0:
+        arr = []
+
+    for i in func:
+        if i == 'R':
+            reverse = 1 - reverse
+        else:
+            if not arr:
+                error = 1
                 break
             else:
-                if flag % 2 == 1:
-                    q.pop()
+                if reverse:
+                    arr.pop()
                 else:
-                    q.popleft()
-                        
+                    arr.popleft()
+    if error:
+        print('error')
     else:
-        if flag % 2 == 1:
-            q.reverse()
-        print('[' + ','.join(q) + ']')
+        if reverse:
+            arr.reverse()
+            print(f"[{','.join(arr)}]")
+        else:
+            print(f"[{','.join(arr)}]")
