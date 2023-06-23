@@ -23,3 +23,4 @@ for _ in range(rep):
         else:
             str1.append(i)
     print(''.join(str1 + list(reversed(str2))))
+    
