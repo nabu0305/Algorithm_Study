@@ -47,7 +47,41 @@ def main():
 
 if __name__ == "__main__":
     main()
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#추가 풀이
+n=int(input())
 
+array=[]
+
+for i in range(n):
+    array.append(list(map(int,input())))
+
+home=[]
+def dfs(x, y):
+    if x<0 or x>=n or y<0 or y>=n:
+        return False
+    if array[x][y]==1:
+        home.append(1)
+        array[x][y]=0
+        dfs(x-1,y)
+        dfs(x,y-1)
+        dfs(x+1,y)
+        dfs(x,y+1)
+        return True
+    return False
+c=[]
+count=0
+for i in range(n):
+    for j in range(n):
+        if dfs(i,j)==True:
+            count=count+1
+            c.append(len(home))
+            home=[]
+            
+c.sort()
+print(count)
+for i in c:
+    print(i)
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 틀린 코드
